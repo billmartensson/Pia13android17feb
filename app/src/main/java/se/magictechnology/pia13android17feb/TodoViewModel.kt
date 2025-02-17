@@ -17,12 +17,27 @@ class TodoViewModel : ViewModel() {
     }
 
     fun deleteTodo(todo : Todoitem) {
+        _todoitems.value.remove(todo)
     }
 
-    fun markDone(todo : Todoitem) {
+    fun switchDone(todo : Todoitem) {
+
+        val todoindex = _todoitems.value.indexOf(todo)
+
+        val newtodo = Todoitem(todo.todotitle, !todo.tododone)
+
+        _todoitems.value[todoindex] = newtodo
+
     }
 
-    fun editTodo(todo : Todoitem) {
+    fun editTodo(todo : Todoitem, newtitle : String) {
+
+        val todoindex = _todoitems.value.indexOf(todo)
+
+        val newtodo = Todoitem(newtitle, todo.tododone)
+
+        _todoitems.value[todoindex] = newtodo
+
     }
 
 }

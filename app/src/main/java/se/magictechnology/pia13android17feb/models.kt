@@ -4,4 +4,4 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Todoitem(val todotitle : String, val tododone : Boolean)
+data class Todoitem(var todotitle : String, var tododone : Boolean)

@@ -31,13 +31,27 @@ fun TodoDetail(todoviewmodel : TodoViewModel,  currenttodo : Todoitem?) {
         TextField(value = todotext, onValueChange = {todotext = it})
 
         Button(onClick = {
-            //todoviewmodel.addTodo("APELSIN", false)
+            if(currenttodo == null) {
+                todoviewmodel.addTodo(todotext, false)
+            } else {
+                todoviewmodel.editTodo(currenttodo, todotext)
+            }
+
         }) {
             if(currenttodo == null) {
                 Text("Add")
             } else {
                 Text("Save")
             }
+        }
+
+        if(currenttodo != null) {
+            Button(onClick = {
+                todoviewmodel.deleteTodo(currenttodo)
+            }) {
+                Text("Delete")
+            }
+
         }
     }
 }
@@ -46,4 +60,10 @@ fun TodoDetail(todoviewmodel : TodoViewModel,  currenttodo : Todoitem?) {
 @Composable
 fun TodoDetailPreview() {
     TodoDetail(todoviewmodel = viewModel(), currenttodo = Todoitem("Test", false))
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TodoDetailPreviewNew() {
+    TodoDetail(todoviewmodel = viewModel(), currenttodo = null)
 }

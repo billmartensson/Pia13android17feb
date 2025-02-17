@@ -16,13 +16,21 @@ fun TodoNav(todoviewmodel : TodoViewModel = viewModel()) {
 
         composable("todolist") {
             TodoList(todoviewmodel = todoviewmodel,goDetail = { todoitem ->
-                navController.navigate(route = todoitem)
+                if(todoitem == null) {
+                    navController.navigate(route = "tododetailnew")
+                } else {
+                    navController.navigate(route = todoitem)
+                }
             })
         }
 
         composable<Todoitem> { backStackEntry ->
             val todoitem : Todoitem = backStackEntry.toRoute()
             TodoDetail(todoviewmodel = todoviewmodel, currenttodo = todoitem)
+        }
+
+        composable("tododetailnew") {
+            TodoDetail(todoviewmodel = todoviewmodel, currenttodo = null)
         }
 
     }

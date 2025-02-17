@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun TodoList(todoviewmodel : TodoViewModel, goDetail : (todoitem : Todoitem) -> Unit) {
+fun TodoList(todoviewmodel : TodoViewModel, goDetail : (todoitem : Todoitem?) -> Unit) {
 
     val todoitems by todoviewmodel.todoitems.collectAsState()
 
@@ -29,25 +29,18 @@ fun TodoList(todoviewmodel : TodoViewModel, goDetail : (todoitem : Todoitem) -> 
         Text("LIST")
 
         Button(onClick = {
-            var temptodo = Todoitem("Lets do something", false)
-            goDetail(temptodo)
-        }) {
-            Text("GO DETAIL")
-        }
-
-        Button(onClick = {
-            todoviewmodel.addTodo("banan", false)
+            goDetail(null)
         }) {
             Text("ADD")
         }
 
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1F)) {
             items(todoitems) { todoitem ->
-                Row(modifier = Modifier.clickable {
+                TodoRow(todoitem = todoitem, clickrow = {
                     goDetail(todoitem)
-                }) {
-                    Text(todoitem.todotitle)
-                }
+                }, clickdone = {
+                    todoviewmodel.switchDone(todoitem)
+                })
             }
         }
     }
