@@ -2,21 +2,48 @@ package se.magictechnology.pia13android17feb
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun TodoDetail(currenttodo : Todoitem) {
+fun TodoDetail(todoviewmodel : TodoViewModel,  currenttodo : Todoitem?) {
+
+    var todotext by remember { mutableStateOf("") }
+
+    LaunchedEffect(true) {
+        if(currenttodo != null) {
+            todotext = currenttodo.todotitle
+        }
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Text("DETAIL")
-        Text(currenttodo.todotitle)
+        TextField(value = todotext, onValueChange = {todotext = it})
+
+        Button(onClick = {
+            //todoviewmodel.addTodo("APELSIN", false)
+        }) {
+            if(currenttodo == null) {
+                Text("Add")
+            } else {
+                Text("Save")
+            }
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun TodoDetailPreview() {
-    TodoDetail(currenttodo = Todoitem("Test", false))
+    TodoDetail(todoviewmodel = viewModel(), currenttodo = Todoitem("Test", false))
 }

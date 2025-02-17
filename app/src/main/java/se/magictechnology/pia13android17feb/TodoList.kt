@@ -11,15 +11,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun TodoList(goDetail : (todoitem : Todoitem) -> Unit) {
+fun TodoList(todoviewmodel : TodoViewModel, goDetail : (todoitem : Todoitem) -> Unit) {
 
-    var todoitems = remember { mutableStateListOf<Todoitem>() }
+    val todoitems by todoviewmodel.todoitems.collectAsState()
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         Text("LIST")
@@ -32,7 +36,7 @@ fun TodoList(goDetail : (todoitem : Todoitem) -> Unit) {
         }
 
         Button(onClick = {
-            todoitems.add(Todoitem("XYZ", false))
+            todoviewmodel.addTodo("banan", false)
         }) {
             Text("ADD")
         }
@@ -53,5 +57,5 @@ fun TodoList(goDetail : (todoitem : Todoitem) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun TodoListPreview() {
-    TodoList(goDetail = {})
+    TodoList(todoviewmodel = viewModel(), goDetail = {})
 }
